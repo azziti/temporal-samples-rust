@@ -9,6 +9,14 @@ use temporal_helpers::parse_activity_result;
 
 pub async fn http_workflow(ctx: WfContext) -> WorkflowResult<String> {
     debug!("Inside http workflow");
+
+    let handler = |_data| {
+        let payload = "query_result".as_json_payload().unwrap();
+
+        Some(payload)
+    };
+    ctx.register_query_handler("query", handler);
+
     let act_handle = ctx
         .activity(ActivityOptions {
             activity_type: "make_http_request".to_string(),
@@ -40,6 +48,14 @@ pub async fn http_workflow(ctx: WfContext) -> WorkflowResult<String> {
 
 pub async fn async_activity_workflow(ctx: WfContext) -> WorkflowResult<String> {
     debug!("Inside async activity workflow");
+
+    let handler = |_data| {
+        let payload = "query_result".as_json_payload().unwrap();
+
+        Some(payload)
+    };
+    ctx.register_query_handler("query", handler);
+
     let act_handle = ctx
         .activity(ActivityOptions {
             activity_type: "do_something_async".to_string(),
